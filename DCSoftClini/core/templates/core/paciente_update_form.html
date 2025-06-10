@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Modifica paciente{% endblock %}
+{% block content %}
+{% include 'core/includes/sub_menu.html' with mensaje='paciente_update' %}
+<main role="main">
+  <div class="datatable-container form-container style="font-size:75%;">
+    <div class="row mt-3 mb-5">
+      <div class="col-md-9 mx-auto">
+        <div>
+            <form action="" method="post" enctype="multipart/form-data" id="seccion-form">{% csrf_token %}
+                <div class="form-group">
+                    <ul class="errorlist">
+                        {% for error in form.non_field_errors %}
+                            <li class="text-danger">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}{% if field.label == 'Contacto' %}<a class="nav-link" href="{% url 'contactopaciente_add' %}"><i>(registra nuevo contacto)</i></a>{% endif %}{% if field.label == 'Peso Kg' %}<a>&nbsp;&nbsp;( actualizado al {{object.fecha_act_peso}} )</a>{% endif %}
+                        </label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="errorlist">
+                                {% for error in field.errors %}
+                                    <p class="text-danger">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <div class="text-center form-submit">
+                    <input type="submit" class="btn btn-primary btn-block" value="Modificar datos del paciente" style="margin-top: 20px;"/>
+                </div>
+            </form>
+            {% if 'ok' in request.GET %}
+              <p style="color:green;">
+                Datos del paciente editada correctamente
+                <a href="{% url 'pacientes' %}"> Has clic aqui para regresar a la lista actualizada</a>
+              </p>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const contactoSelect = document.querySelector("#id_contactopaciente");
+        const urlParams = new URLSearchParams(window.location.search);
+        const contactoId = urlParams.get("contactopaciente_id");
+
+        if (contactoId) {
+            contactoSelect.value = contactoId;
+        }
+    });
+
+    document.getElementById('seccion-form').addEventListener('submit', function() {
+        const contactopacienteField = document.getElementById('id_contactopaciente');
+        if (contactopacienteField) {
+            contactopacienteField.disabled = false;
+        }
+    });
+
+</script>
+
+{% endblock %}

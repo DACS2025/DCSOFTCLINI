@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Nuevo ingreso veterinario{% endblock %}
+{% block content %}
+{% include 'core/includes/sub_menu.html' with mensaje='medicoveterinario_create' %}
+<main role="main">
+  <div class="datatable-container style="font-size:90%;">
+    <div class="row mt-3 mb-5">
+      <div class="col-md-9 mx-auto">
+        <div>
+            <form action="" method="post">{% csrf_token %}
+                {{form.as_p}}
+                <div class="text-center">
+                    <input type="submit" class="btn btn-primary btn-block" value="Agregar datos de nuevo medico veterinario" />
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,184 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}historias{% endblock %}
+{% block content %}
+{% include 'core/includes/sub_menu.html' with mensaje='historiaclinica_detail' %}
+<head>
+    <!-- Otros enlaces y metadatos -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<script>
+  $(document).ready(function(){
+    $('#consultaModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Botón que activa el modal
+        var consultaId = button.data('id') // Extraer el `id` del atributo data-id
+        
+        var modal = $(this)
+
+        $.ajax({
+            url: '{% url "cita_consulta_medica" %}', // URL de la vista que procesa la consulta
+            data: {
+                'id': consultaId
+            },
+            success: function(data) {
+                // Cargar la información en el modal
+                modal.find('.modal-body').html(
+                  `<label>Fecha</label>
+                   <div class="textarea-container">${String(data.fecha)}</div>
+                   <label>Asistido por el doctor</label>
+                   <div class="textarea-container">${data.veterinario.replace(/\n/g, '<br>')}</div>
+                   <div></div>
+                   <label>Motivo de la consulta</label>
+                   <div class="textarea-container">${data.motivo.replace(/\n/g, '<br>')}</div>
+                   <label>Examen físico</label>
+                   <div class="textarea-container">${data.examen_fisico.replace(/\n/g, '<br>')}</div>
+                   <label>Diagnostico</label>
+                   <div class="textarea-container">${data.diagnostico.replace(/\n/g, '<br>')}</div>
+                   <label>Tratamiento</label>
+                   <div class="textarea-container">${data.tratamiento.replace(/\n/g, '<br>')}</div>
+                   <label>Notas adicionales</label>
+                   <div class="textarea-container">${data.notas_adicionales.replace(/\n/g, '<br>')}</div>
+                   <label>Peso Kg</label>
+                   <div class="textarea-container">${String(data.peso)}</div>`
+                )
+            }
+        })
+    })
+
+    $('#servicioModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Botón que activa el modal
+        var servicioId = button.data('id') // Extraer el `id` del atributo data-id
+        
+        var modal = $(this)
+
+        $.ajax({
+            url: '{% url "cita_servicio" %}', // URL de la vista que procesa la consulta
+            data: {
+                'id': servicioId
+            }, 
+            success: function(data_response) {
+
+              var modalContent = '';
+
+
+                modalContent += '<p></p>';
+                modalContent += '<h5 style="padding:10px">Fecha '+String(data_response.fecha)+' </h5>';
+
+                // Iterar sobre los datos y generar el HTML
+                $.each(data_response.data, function(index, item) {
+                    modalContent += '<div class="textarea-container">Servicio ' + index + ': ' + item.servicio + '</div>';
+                });
+
+                modalContent += '<p></p>';
+                modalContent += '<h5 style="padding:10px">Notas</h5>';
+                modalContent += '<div class="textarea-container">'+ data_response.notas + '</div>';
+
+                // Cargar la información en el modal
+                modal.find('.modal-body2').html(modalContent);
+            }
+        })
+    })
+
+
+  })
+</script>
+<main role="main">
+  <div class="datatable-container form-container style="font-size:75%;">
+    <div class="row mt-3 mb-5">
+
+      <div class="modal fade" id="consultaModal" tabindex="-1" role="dialog" aria-labelledby="consultaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="consultaModalLabel">Cita médica</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="servicioModal" tabindex="-1" role="dialog" aria-labelledby="servicioModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="servicioModalLabel">Servicios tomados</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body2">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-9 mx-auto">
+        <div>
+            <div class="form-group">
+
+              {{ form.as_p }}
+
+            </div>
+            {% if object.paciente.imagen %}
+              <img src="{{ object.paciente.imagen.url }}" alt="Imagen del paciente" class="avatar">
+            {% endif %}
+            <div class="historia_left">
+              {% if object.paciente.raza.nombre %}
+                <label>Especie-raza</label>
+                <p>{{ object.paciente.raza.especie.nombre }}-{{ object.paciente.raza.nombre }} </p>
+              {% endif %}
+              {% if object.paciente.sexo %}
+                <label>Sexo</label>
+                {% if object.paciente.sexo == "M"  %}
+                  <p> MACHO </p>
+                {% else %}
+                  <p> HEMBRA </p>
+                {% endif %}
+              {% endif %}
+              {% if object.paciente.color %}
+                <label>Color</label>
+                <p>{{ object.paciente.color }} </p>
+              {% endif %}
+              {% if object.paciente.peso %}
+                <label>Peso</label>
+                <p>{{ object.paciente.mostrar_peso_inicial_actual }} kg </p>
+              {% endif %}
+              {% if object.paciente.calcular_edad_detallada %}
+                <label>Edad</label>
+                <p>{{ object.paciente.calcular_edad_detallada }} </p>
+              {% endif %}
+              <a href="{% url 'generar_historia_clinica_pdf' object.paciente.id %}">genera historia en PDF</a>
+          </div>
+          <div class="historia_right">
+            <label>Consultas médicas</label>
+            {% for consulta in object.paciente.consultas.all %}
+              <a href="#" data-toggle="modal" data-target="#consultaModal" data-id="{{ consulta.id }}">Cita {{consulta.fecha|date:"Y/m/d"}}</a>
+              <p></p>
+            {% endfor %}
+            <p></p>
+            <label>Servicios</label><p></p>
+            {% for servicio in object.paciente.servicios.all %}
+              <a href="#" data-toggle="modal" data-target="#servicioModal" data-id="{{ servicio.id }}">Cita {{servicio.fecha|date:"Y/m/d"}}</a>
+              <p></p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+    
+{% endblock %}

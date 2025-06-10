@@ -1,0 +1,487 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Pacientes-Historias{% endblock %}
+{% block headers %}
+<style>
+    .paciente {
+        width: 10%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .historia {
+        width: 4%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .cita {
+        width: 5%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .contacto {
+        width: 27%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .raza {
+        width: 10%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .sexo {
+        width: 4%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .nacimiento {
+        width: 15%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .color {
+        width: 15%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .peso {
+        width: 5%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .operaciones {
+        width: 4%;  /* Ajusta el porcentaje según sea necesario */
+    }
+
+    .highlighted {
+        background-color: yellow; /* Color de fondo para resaltar el registro */
+    }
+    .cursor-row {
+        background-color: lightblue; /* Color de fondo para el cursor de barra horizontal */
+    }
+</style>
+<script>
+    const itemsPerPage = {{ page_obj.paginator.per_page }};
+    document.addEventListener("DOMContentLoaded", function() {
+
+        // Llamamos al endpoint para activar la variable en el back-end.
+
+        const nroHiscli = "{{ nro_hiscli|default_if_none:'' }}";
+        const pageNumber = {{ page_number|default:1 }};
+        const paciente_id = {{ paciente_id|default:0 }};
+        const currentPage = parseInt(new URLSearchParams(window.location.search).get("page")) || 1;
+
+        console.log('paciente id',paciente_id,'nroHiscli',nroHiscli,'pageNumber',pageNumber,'currentPage',currentPage)
+
+        // Si nroHiscli es válido y estamos en una página distinta a la correcta
+        if (paciente_id && currentPage !== pageNumber) {
+            // Redirigir a la página correcta
+            // reescribir_nroHiscli(nroHiscli);
+            reescribir_paciente_id(paciente_id);
+            window.location.href = `${window.location.pathname}?page=${pageNumber}&highlight=${paciente_id}`;
+        } else if (paciente_id) {
+            // Resaltar la fila si ya estamos en la página correcta
+            const row = document.getElementById("paciente-" + paciente_id);
+            if (row) {
+                highlightRow(row);
+            }
+        }
+
+        // Verificar si hay un parámetro highlight en la URL para resaltar la fila después de la redirección
+        const urlParams = new URLSearchParams(window.location.search);
+        const highlight = urlParams.get('highlight');
+        if (highlight) {
+            const row = document.getElementById("paciente-" + highlight);
+            if (row) {
+                highlightRow(row);
+            }
+        }
+
+        function highlightRow(row) {
+            row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            row.style.backgroundColor = '#ffff99'; // Cambiar el color de fondo para resaltar
+
+            // Eliminar el sombreado después de 3 segundos (3000 milisegundos)
+            setTimeout(() => {
+                row.style.backgroundColor = ''; // Restablecer el color de fondo
+            }, 3000);
+        }
+
+        function reescribir_paciente_id(paciente_id) {
+            fetch('{% url "reescribir_paciente_id"  %}', { 
+              method: 'GET',
+              body: new URLSearchParams({
+                  'paciente_id': paciente_id,
+              })
+            })
+            .then(response => response.json())
+            .then(data => console.log(data.status))
+            .catch(error => console.error('Error al activar el proceso:', error));
+        }
+
+        document.getElementById("search-a").addEventListener("click", function (event) {
+            event.preventDefault(); // Prevenir el comportamiento por defecto del enlace
+
+            const nro_hiscli = document.getElementById('input_historia').value;
+            const paciente_nombre = document.getElementById('input_paciente').value;
+            const contacto_nombres = document.getElementById('input_contacto').value;
+
+            console.log("nro_hiscli",nro_hiscli)
+            console.log("paciente_nombre",paciente_nombre)
+            console.log("contacto_nombres",contacto_nombres)
+
+            fetch("{% url 'pacientes_busqueda_relativa' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: new URLSearchParams({
+                    'nro_hiscli': nro_hiscli,
+                    'paciente_nombre': paciente_nombre,
+                    'contacto_nombres': contacto_nombres,
+                    'csrfmiddlewaretoken': csrfToken
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("paciente id",data.paciente_id);
+                console.log("page number",data.page_number);
+
+                if (data.page_number <= 0) {
+                    alert(`Busqueda no hallada`);
+                }
+                else {
+                    reescribir_paciente_id(data.paciente_id);
+                    window.location.href = `${window.location.pathname}?page=${data.page_number}&highlight=${data.paciente_id}`;
+                }
+
+            })
+
+            .catch(error => console.error('Error:', error));
+
+        });
+
+
+    });
+
+    function openModal(nro_hiscli,paciente_id) {
+        document.getElementById('modal-consulta-servicios-reservas').setAttribute('data-hiscli', nro_hiscli);
+        console.log('paciente_id',paciente_id)
+        document.getElementById('modal-consulta-servicios-reservas').setAttribute('data-paciente_id', paciente_id);
+        $('#modal-consulta-servicios-reservas').modal('show');
+    }
+
+    function openModifica(paciente_id,contactopaciente_id,historia_id) {
+        document.getElementById('modal-modifica-paciente-contacto-historia').setAttribute('data-paciente_id', paciente_id);
+
+        document.getElementById('modal-modifica-paciente-contacto-historia').setAttribute('data-contactopaciente_id', contactopaciente_id);
+
+        document.getElementById('modal-modifica-paciente-contacto-historia').setAttribute('data-historia_id', historia_id);
+
+        if (historia_id) {
+          $('#modal-modifica-paciente-contacto-historia').modal('show');
+        }
+        else {
+          $('#modal-modifica-paciente-contacto').modal('show');
+        }
+    }
+
+    function openElimina(paciente_id,contactopaciente_id,historia_id) {
+        document.getElementById('modal-elimina-paciente-contacto-historia').setAttribute('data-paciente_id', paciente_id);
+
+        document.getElementById('modal-elimina-paciente-contacto-historia').setAttribute('data-contactopaciente_id', contactopaciente_id);
+
+        document.getElementById('modal-elimina-paciente-contacto-historia').setAttribute('data-historia_id', historia_id);
+
+        if (historia_id) {
+          $('#modal-elimina-paciente-contacto-historia').modal('show');
+        }
+        else {
+          $('#modal-elimina-paciente-contacto').modal('show');
+        }
+    }
+
+    function navigateTo(option) {
+        if (option === 'consulta') {
+          const nro_hiscli = document.getElementById('modal-consulta-servicios-reservas').getAttribute('data-hiscli');
+          window.location.href = `{% url 'consulta_medica' 'REPLACE_HISCLI' %}`.replace('REPLACE_HISCLI', nro_hiscli);
+        } 
+        else if (option === 'servicios') {
+          const id = document.getElementById('modal-consulta-servicios-reservas').getAttribute('data-paciente_id');
+          window.location.href = `{% url 'servicios' '0' %}`.replace('0', id);
+        }
+        else if (option === 'reservas') {
+          const id = document.getElementById('modal-consulta-servicios-reservas').getAttribute('data-paciente_id');
+          window.location.href = `{% url 'programar_cita' '0' %}`.replace('0', id);
+        }
+        else if (option === 'modifica_paciente') {
+          const id = document.getElementById('modal-modifica-paciente-contacto-historia').getAttribute('data-paciente_id');
+          window.location.href = `{% url 'paciente_update' '0' %}`.replace('0', id);
+        }
+        else if (option === 'modifica_contacto') {
+
+          const id = document.getElementById('modal-modifica-paciente-contacto-historia').getAttribute('data-contactopaciente_id');
+
+          const paciente_id = document.getElementById('modal-modifica-paciente-contacto-historia').getAttribute('data-paciente_id');
+
+          window.location.href = `{% url 'contactopaciente_update' '0' '99' %}`.replace('0', id).replace('99', paciente_id);
+        }
+        else if (option === 'modifica_historia') {
+          const id = document.getElementById('modal-modifica-paciente-contacto-historia').getAttribute('data-historia_id');
+          window.location.href = `{% url 'historia_update' '0' %}`.replace('0', id);
+        }
+        else if (option === 'elimina_paciente') {
+          const id = document.getElementById('modal-elimina-paciente-contacto-historia').getAttribute('data-paciente_id');
+          window.location.href = `{% url 'paciente_delete' '0' %}`.replace('0', id);
+        }
+        else if (option === 'elimina_contacto') {
+
+          const id = document.getElementById('modal-elimina-paciente-contacto-historia').getAttribute('data-contactopaciente_id');
+
+          const paciente_id = document.getElementById('modal-elimina-paciente-contacto-historia').getAttribute('data-paciente_id');
+
+          window.location.href = `{% url 'contactopaciente_delete' '0' '99' %}`.replace('0', id).replace('99', paciente_id);
+        }
+        else if (option === 'elimina_historia') {
+          const id = document.getElementById('modal-elimina-paciente-contacto-historia').getAttribute('data-historia_id');
+          window.location.href = `{% url 'historia_delete' '0' %}`.replace('0', id);
+        }
+    }
+
+    function validatePageInput() {
+        const pageInput = document.getElementById("pageInput").value;
+        const maxPage = {{ paginator.num_pages }};
+
+        if (!pageInput || pageInput < 1 || pageInput > maxPage) {
+            alert(`Por favor, ingresa un número de página válido entre 1 y ${maxPage}.`);
+            return false; // Previene el envío del formulario
+        }
+        return true; // Permite el envío del formulario
+    }
+
+</script>
+{% include 'core/includes/sub_menu.html' with mensaje='pacientes' %}
+{% endblock %}
+{% block content %}
+<script>
+    const csrfToken = "{{ csrf_token }}";
+</script>
+<div class="datatable-container" style="font-size:74%;">
+  <div class="header-tools">
+    <input type="search" placeholder="Buscar por paciente" id="input_paciente">
+    <input type="search" placeholder="Buscar por contacto" id="input_contacto">
+    <input type="search" placeholder="Buscar por nro historia" id="input_historia">
+    <a href="#" id="search-a"><i class="bi bi-search"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="{% url 'paciente_add' 0 %} "> NUEVO PACIENTE <i class="bi bi-plus-circle" id="new"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="{% url 'programar_cita_nuevo_paciente' %}"> AGENDAR CITA PARA NUEVO PACIENTE <i class="bi bi-plus-circle" id="newprogcita"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="{% url 'exportaPDF_pacientes'%}"> EXPORTA A PDF  <i class="bi bi-printer" id="print"></i></a>
+  </div>
+  <table class="datatable" id="paciente-table">
+    <thead>
+      <tr>
+        <th class='paciente izquierda'>Paciente</th>
+        <th class='historia izquierda'>Historia</th>
+        <th class='cita izquierda'>Cita</th>
+        <th class='contacto izquierda'>Contacto</th>
+        <th class='raza izquierda'>Especie - Raza</th>
+        <th class='sexo izquierda'>Sexo</th>
+        <th class='nacimiento izquierda'>Nacimiento ( Edad actual )</th>
+        <th class='color izquierda'>Color</th>
+        <th class='peso izquierda'>Peso Kg</th>
+        <th class='operaciones izquierda'>Op.</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in page_obj %}
+          <!-- <tr id="paciente-{{ item.historia.nro_hiscli }}"> -->
+          <tr id="paciente-{{ item.id }}">
+              <td class='paciente izquierda'>{{item.nombre}}</td>
+
+              {% if item.historia %}
+                <td class='historia izquierda'><a href="{% url 'historiaclinica_detail' encoded_id=item.historia.encoded_id %}">{{item.historia.nro_hiscli}}</a></td>
+              {% else %}
+                <td class='historia izquierda'><a href="{% url 'historia_add' encoded_id=item.encoded_id %}">Nuevo</a></td>
+              {% endif %}
+              
+              {% if item.historia %}
+                <td class='cita izquierda'><a href="#" onclick="openModal('{{item.historia.nro_hiscli}}','{{item.id}}')">registra cita</a></td>
+              {% else %}
+                <td class='cita izquierda'></td>
+              {% endif %}
+              
+              <td class='contacto izquierda'>{{item.contactopaciente.nombres}} ({{item.contactopaciente.direccion}} - cel {{item.contactopaciente.telef_movil}} )</td>
+
+              <td class='raza izquierda'>{{item.raza.especie.nombre}} - {{item.raza.nombre}}</td>
+
+              {% if item.sexo == 'M' %}
+                <td class='sexo izquierda'>MACHO</td>
+              {% else %}
+                <td class='sexo izquierda'>HEMBRA</td>
+              {% endif %}
+
+              <td class='nacimiento izquierda'>{{item.nacimiento|date:"Y-m-d"}} ( {{item.calcular_edad_detallada}} )</td>
+
+              <td class='color izquierda'>{{item.color}}</td>
+              <td class='peso izquierda'>{{item.mostrar_peso_inicial_actual}}</td>
+
+              <td class='operaciones izquierda'>
+                <a href="#"><i class="bi bi-pencil-square" id="icons" onclick="openModifica('{{item.id}}','{{item.contactopaciente.id}}','{{item.historia.id}}')"></i></a>
+                <a href="#"><i class="bi bi-trash" id="icons" onclick="openElimina('{{item.id}}','{{item.contactopaciente.id}}','{{item.historia.id}}')"> </i></a>
+              </td>
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% if is_paginated %}
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+
+        <!-- Botón para ir a la primera página -->
+        <li class="page-item {% if page_obj.number == 1 %}disabled{% endif %}">
+            {% if page_obj.number != 1 %}
+                <a class="page-link" href="?page=1" aria-label="Primera">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+            {% else %}
+                <span class="page-link" aria-label="Primera">&laquo;&laquo;</span>
+            {% endif %}
+        </li>
+
+        <!-- Botón para la página anterior -->
+        <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+            {% if page_obj.has_previous %}
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Anterior">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            {% else %}
+                <span class="page-link" aria-label="Anterior">&laquo;</span>
+            {% endif %}
+        </li>
+
+        <!-- Mostrar un rango dinámico de páginas -->
+        {% with page_obj.number|add:"-4" as start_page %}
+        {% with page_obj.number|add:"4" as end_page %}
+        {% for i in page_obj.paginator.page_range %}
+            {% if i >= start_page and i <= end_page %}
+                <li class="page-item {% if page_obj.number == i %}active{% endif %}">
+                    <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+        {% endwith %}
+        {% endwith %}
+
+        <!-- Botón para la página siguiente -->
+        <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+            {% if page_obj.has_next %}
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Siguiente">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            {% else %}
+                <span class="page-link" aria-label="Siguiente">&raquo;</span>
+            {% endif %}
+        </li>
+
+        <!-- Botón para ir a la última página -->
+        <li class="page-item {% if page_obj.number == paginator.num_pages %}disabled{% endif %}">
+            {% if page_obj.number != paginator.num_pages %}
+                <a class="page-link" href="?page={{ paginator.num_pages }}" aria-label="Última">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            {% else %}
+                <span class="page-link" aria-label="Última">&raquo;&raquo;</span>
+            {% endif %}
+        </li>
+
+        <!-- Campo para buscar por número de página -->
+        <li class="page-item">
+            <form method="GET" action="" class="d-flex align-items-center">
+                <input type="number" name="page" id="pageInput" class="form-control"
+                       placeholder="Página" min="1" max="{{ paginator.num_pages }}"
+                       style="width: 100px; font-size: 0.870rem; height: 33px; text-align: center;">
+                <button type="submit" class="btn btn-primary ms-2" style="font-size: 0.870rem;">Ir</button>
+            </form>
+        </li>
+
+    </ul>
+</nav>
+{% endif %}
+
+</div>
+
+<!-- Modal de Bootstrap -->
+<div class="modal fade" id="modal-consulta-servicios-reservas" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Seleccione una opción</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="btn btn-primary" onclick="navigateTo('consulta')">Consulta Médica</button>
+        <button type="button" class="btn btn-secondary" onclick="navigateTo('servicios')">Servicios Complementarios</button>
+        <button type="button" class="btn btn-secondary" onclick="navigateTo('reservas')">Reserva cita</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="modal-modifica-paciente-contacto-historia" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Modifica datos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="btn btn-primary" onclick="navigateTo('modifica_paciente')">Del paciente</button>
+        <button type="button" class="btn btn-secondary" onclick="navigateTo('modifica_contacto')">Del Contacto</button>
+        <button type="button" class="btn btn-secondary" onclick="navigateTo('modifica_historia')">Historia Clinica</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-modifica-paciente-contacto" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Modifica datos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="btn btn-primary" onclick="navigateTo('modifica_paciente')">Del paciente</button>
+        <button type="button" class="btn btn-secondary" onclick="navigateTo('modifica_contacto')">Del Contacto</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-elimina-paciente-contacto-historia" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Elimina datos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="btn btn-primary" onclick="navigateTo('elimina_paciente')">Del paciente</button>
+        <button type="button" class="btn btn-secondary" onclick="navigateTo('elimina_contacto')">Del Contacto</button>
+        <button type="button" class="btn btn-secondary" onclick="navigateTo('elimina_historia')">Historia Clinica</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-elimina-paciente-contacto" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Elimina datos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="btn btn-primary" onclick="navigateTo('elimina_paciente')">Del paciente</button>
+        <button type="button" class="btn btn-secondary" onclick="navigateTo('elimina_contacto')">Del Contacto</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

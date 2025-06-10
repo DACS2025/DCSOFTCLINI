@@ -1,0 +1,119 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed; top: 0;width: 100%;">
+  <div class="container-include">
+    <span class="navbar-brand" style= style="padding-left: 0; text-align: center; display: block;" href="#">
+      <i>
+      {% if mensaje == "historias" %}HISTORIAS CLINICAS{% endif %}
+      {% if mensaje == "pacientes" %}RELACION DE PACIENTES - HISTORIAS CLINICAS{% endif %}
+      {% if mensaje == "paciente_add" %}REGISTRO DE DATOS DE NUEVO PACIENTE{% endif %}
+      {% if mensaje == "paciente_update" %}ACTUALIZA DATOS DE PACIENTE{% endif %}
+      {% if mensaje == "paciente_delete" %}BORRA EL REGISTRO DEL PACIENTE{% endif %}
+      {% if mensaje == "contactopaciente_add" %}REGISTRO DE DATOS DE NUEVO CONTACTO{% endif %}
+      {% if mensaje == "contactopaciente_update" %}ACTUALIZA DATOS DE CONTACTO{% endif %}
+      {% if mensaje == "contactopaciente_delete" %}BORRA EL REGISTRO DEL CONTACTO{% endif %}
+      {% if mensaje == "historiaclinica_add" %}APERTURA HISTORIA CLINICA A PACIENTE{% endif %}
+      {% if mensaje == "historiaclinica_update" %}ACTUALIZA HISTORIA CLINICA DE PACIENTE{% endif %}
+      {% if mensaje == "historiaclinica_delete" %}BORRA LA HISTORIA CLINICA DE PACIENTE{% endif %}
+      {% if mensaje == "consultamedica_add" %}INGRESA CONSULTA MEDICA{% endif %}
+      {% if mensaje == "consulta_medica_list" %}CONSULTAS MEDICAS POR PACIENTE{% endif %}
+      {% if mensaje == "consulta_medica_delete" %}BORRA LA CONSULTA MEDICA{% endif %}
+      {% if mensaje == "historiaclinica_detail" %}HISTORIA CLINICA{% endif %}
+      {% if mensaje == "servicios_add" %}SELECCIONAR SERVICIOS{% endif %}
+      {% if mensaje == "servicios_list" %}SERVICIOS TOMADOS POR PACIENTE{% endif %}
+      {% if mensaje == "servicio_delete" %}BORRA SERVICIO{% endif %}
+      {% if mensaje == "inicio_sesion" %}INGRESE USUARIO Y CONTRASEÑA{% endif %}
+      {% if mensaje == "programar_cita" %}PROGRAMA UNA NUEVA CITA{% endif %}
+      {% if mensaje == "programar_cita_nuevo_paciente" %}PROGRAMA UNA NUEVA CITA PARA NUEVO PACIENTE{% endif %}
+      {% if mensaje == "posologia_add" %}REGISTRANDO LA RECETA{% endif %}
+      {% if mensaje == "medicoveterinario_list" %}STAFF MEDICOS VETERINARIOS{% endif %}
+      {% if mensaje == "medicoveterinario_create" %}NUEVO REGISTRO PARA MEDICO VETERINARIO{% endif %}
+      {% if mensaje == "medicoveterinario_update" %}ACTUALIZAR REGISTRO DEL MEDICO VETERINARIO{% endif %}
+      {% if mensaje == "medicoveterinario_delete" %}BORRAR REGISTRO DEL MEDICO VETERINARIO{% endif %}
+
+      {% if mensaje == "tiposervicio_list" %}CATALOGO DE SERVICIOS{% endif %}
+      {% if mensaje == "tiposervicio_create" %}NUEVO SERVICIO{% endif %}
+      {% if mensaje == "tiposervicio_update" %}ACTUALIZAR SERVICIO{% endif %}
+      {% if mensaje == "tiposervicio_delete" %}BORRAR SERVICIO{% endif %}
+
+      {% if mensaje == "especie_list" %}CATALOGO DE ESPECIES{% endif %}
+      {% if mensaje == "especie_create" %}NUEVA ESPECIE{% endif %}
+      {% if mensaje == "especie_update" %}ACTUALIZA ESPECIE{% endif %}
+      {% if mensaje == "especie_delete" %}BORRAR ESPECIE{% endif %}
+
+      {% if mensaje == "raza_list" %}CATALOGO DE RAZAS{% endif %}
+      {% if mensaje == "raza_create" %}NUEVA RAZA{% endif %}
+      {% if mensaje == "raza_update" %}ACTUALIZA RAZA{% endif %}
+      {% if mensaje == "raza_delete" %}BORRAR RAZA{% endif %}
+
+      {% if mensaje == "citasprogramadas_list" %}CITAS PROGRAMADAS{% endif %}
+
+      </i>
+    </span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nep" aria-controls="nep" aria-expanded="false">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nep" style="margin: 0; padding: 0; width: 100%;">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+
+          {% if mensaje == "paciente_add" %}
+            <a class="nav-link" href="{% url 'pacientes' %}"><i>( ir al menú anterior )</i></a>
+          {% endif %}
+
+          {% if mensaje == "servicios_add" %}
+            <a class="nav-link" href="{% url 'pacientes' %}"><i>( ir al menú anterior )</i></a>
+          {% endif %}
+
+          {% if mensaje == "servicio_delete" %}
+            <a class="nav-link" href="{% url 'servicios_list' %}"><i>( ir al menú anterior )</i></a>
+          {% endif %}
+
+          {% if mensaje == "historiaclinica_detail" %}
+            <a class="nav-link" href="{% url 'pacientes' %}"><i>( ir al menú anterior )</i></a>
+          {% endif %}
+
+          {% if mensaje == "contactopaciente_add" %}
+            <a class="nav-link" href="{% url 'paciente_add' 0 %}"><i>( ir al menú anterior )</i></a>
+          {% endif %}
+
+          {% if mensaje == "historiaclinica_add" %}
+            <a class="nav-link" href="{% url 'pacientes' %}"><i>( ir al menú anterior )</i></a>
+          {% endif %}
+
+          {% if mensaje == "consultamedica_add" %}
+            <a class="nav-link" href="{% url 'pacientes' %}"><i>( ir al menú anterior )</i></a>
+          {% endif %}
+
+          {% if mensaje == "posologia_add" or mensaje == "paciente_update" or mensaje == "paciente_delete" or mensaje == "contactopaciente_update" or mensaje == "contactopaciente_delete" or mensaje == "historiaclinica_update" or mensaje == "historiaclinica_delete" or mensaje == "programar_cita" or mensaje == "programar_cita_nuevo_paciente" %}
+            <a class="nav-link" href="{% url 'pacientes' %}"><i>( ir al menú anterior )</i></a>
+          {% endif %}
+
+          {% if mensaje == "medicoveterinario_create" or  mensaje == "medicoveterinario_update" or  mensaje == "medicoveterinario_delete" %}
+            <a class="nav-link" href="{% url 'medicoveterinario_list' %}"><i>( ir al menú anterior )</i></a>
+          {% endif %}
+
+          {% if mensaje == "tiposervicio_create" or  mensaje == "tiposervicio_update" or  mensaje == "tiposervicio_delete" %}
+            <a class="nav-link" href="{% url 'tiposervicio_list' %}"><i>( ir al menú anterior )</i></a>
+          {% endif %}
+
+          {% if mensaje == "especie_create" or  mensaje == "especie_update" or  mensaje == "especie_delete" %}
+            <a class="nav-link" href="{% url 'especie_list' %}"><i>( ir al menú anterior )</i></a>
+          {% endif %}
+
+          {% if mensaje == "raza_create" or  mensaje == "raza_update" or  mensaje == "raza_delete" %}
+            <a class="nav-link" href="{% url 'raza_list' %}"><i>( ir al menú anterior )</i></a>
+          {% endif %}
+
+          {% if mensaje == "consulta_medica_delete" %}
+            <a class="nav-link" href="{% url 'consulta_medica_list' %}"><i>( ir al menú anterior )</i></a>
+          {% endif %}
+
+          {% if mensaje == "historias" or mensaje == "pacientes" or mensaje == "medicoveterinario_list" or mensaje == "tiposervicio_list" or mensaje == "especie_list" or mensaje == "raza_list" or mensaje == "citasprogramadas_list" or mensaje == "servicios_list" or mensaje == "consulta_medica_list" %}
+            <a class="nav-link" href="{% url 'home' %}"><i>( ir al menú anterior )</i></a>
+          {% endif %}
+
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

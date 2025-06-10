@@ -1,0 +1,313 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Inicio{% endblock %}
+{% block headers %}
+    <script src="{% static 'core/js/main.js' %}"></script>
+{% endblock %}
+{% block content %}
+{% include 'core/includes/sub_menu.html' with mensaje='posologia_add' %}
+<meta charset="UTF-8">
+<style> 
+    input[type="text"] {
+        width: 100%; important!
+        max-width: 1100px; /* Puedes definir un máximo si deseas */
+        padding: 8px; /* Añade espacio interno */
+        font-size: 16px; /* Ajusta el tamaño de la fuente */
+    }
+    input[type="date"] {
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    select:disabled { 
+        background-color:#2F4156; /* #d3d3d3 Color de fondo más intenso */ 
+        color: #FFFFFF; /* #333 Color del texto */ 
+    }
+    /* Estilos para la ventana emergente */
+    .popup {
+        display: none; /* Oculto por defecto */
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background-color: white;
+        border: 2px solid red;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    .highlight {
+        background-color:rgb(247, 236, 39); /* Puedes ajustar el color a tu gusto */
+    }
+
+    .subcontainer {
+        display: flex;
+        gap: 10px; /* espacio entre los formularios */
+    }
+
+    .form-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    form {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    @media (max-width: 932px) {
+        .subcontainer {
+            flex-direction: column; /* Cambia la dirección a columna en pantallas pequeñas */
+        }
+
+        form {
+            flex-direction: column; /* Cambia la dirección de los formularios a columna en pantallas pequeñas */
+            align-items: flex-start; /* Alinea los elementos al inicio en pantallas pequeñas */
+        }
+    }
+
+    input {
+        margin-bottom: 0; /* Elimina el margen inferior para mantener los elementos alineados */
+    }
+
+    /* ajuste de ancho de columnas en tabla  */
+
+    .farmaco {
+        width: 33%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .cantidad {
+        width: 30%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .dosis {
+        width: 33%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .operacion {
+        width: 4%;  /* Ajusta el porcentaje según sea necesario */
+    }
+
+    .ocultar {
+      display: none;
+    }
+
+    .centrar {
+        text-align: center;
+    }
+
+    .izquierda {
+        text-align: left;
+        padding-left: 5px;
+    }
+
+    .numerico {
+        text-align: right;
+        padding-right: 5px;
+    }
+
+</style>
+
+<script>
+
+    // Definir la URL del archivo MP3 como una variable global
+    var audioURL_error = "{% static 'core/sounds/beep-warning-6387.mp3' %}";
+    var audioURL_ok = "{% static 'core/sounds/short-beep-tone-47916.mp3' %}";
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // Obtener el token CSRF desde el formulario
+        //const csrfTokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
+
+        const inputAgregarFarmaco = document.getElementById('farmaco');
+        inputAgregarFarmaco.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                validaFarmaco();
+            }
+        });
+
+        const inputAgregarCantidad = document.getElementById('cantidad');
+        inputAgregarCantidad.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                validaCantidad();
+            }
+        });
+
+        const inputAgregarDosis = document.getElementById('dosis');
+        inputAgregarDosis.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                agregarFarmaco(event);
+            }
+        });
+
+    });
+
+    window.addEventListener('beforeunload', function (event) {
+            limpia_lista_farmacos();
+    });
+
+    function copiarDatos() { 
+        document.getElementById('proceso_parcial_finalizado').value = 'true';
+
+    } 
+
+    function validaFarmaco(event) {
+        document.getElementById('cantidad').focus(); 
+    }
+
+    function validaCantidad(event) {
+        document.getElementById('dosis').focus(); 
+    }
+
+    function agregarFarmaco(event) {
+        event.preventDefault();
+
+        const farmaco = document.getElementById('farmaco').value;
+        const cantidad = document.getElementById('cantidad').value;
+        const dosis = document.getElementById('dosis').value;
+
+        const listaPosologia = document.getElementById('lista_posologia').querySelectorAll('tr'); 
+
+        const consultamedica_id = {{consultamedica_id}};
+
+        fetch("{% url 'posologia_add' consultamedica_id %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: new URLSearchParams({
+                'farmaco': farmaco,
+                'cantidad': cantidad,
+                'dosis': dosis,
+                'csrfmiddlewaretoken': csrfToken
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const listaPosologia = document.getElementById('lista_posologia');
+            const row = document.createElement('tr');
+
+            row.innerHTML = `<td class="farmaco izquierda">${data.farmaco}</td><td class="cantidad izquierda">${data.cantidad}</td><td class="dosis izquierda">${data.dosis}</td><td class='operacion izquierda'><a href="#"><i class="bi bi-trash" id="icons"></i></a></td>`;
+
+            listaPosologia.appendChild(row);
+
+            document.getElementById('farmaco').value = '';
+            document.getElementById('cantidad').value = '';
+            document.getElementById('dosis').value = '';
+            document.getElementById('farmaco').focus();
+            alertSonidoOk();
+        })
+
+        .catch(error => console.error('Error:', error));
+    }
+
+    function limpia_lista_farmaco() { 
+        var xhr = new XMLHttpRequest(); 
+        xhr.open("POST", "{% url 'posologia_limpia_lista_farmacos' %}", true); 
+        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}"); 
+
+        xhr.onreadystatechange = function() { 
+            if (xhr.readyState === XMLHttpRequest.DONE) { 
+                if (xhr.status !== 200) { 
+                    console.error("Error al limpiar la lista de farmacos:", xhr.statusText); 
+                } else {
+                    console.log("Lista de farmacos depurada ok");
+                }
+            } 
+        }; 
+
+        xhr.send(JSON.stringify()); 
+    }
+
+</script>
+<div class="modal fade" id="confirmacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmacionModalLabel">Confirmación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas marcar este registro como eliminado?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" id="confirmarEliminacion">Sí</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const csrfToken = '{{ csrf_token }}';
+</script>
+
+<div class="datatable-container" style="font-size:90%;">
+<body>
+    <div class="subcontainerx">
+        <div class="form-wrapper">
+            <form method="post" onsubmit="validaFarmaco(event)">
+                {% csrf_token %}
+                <label for="farmaco">Farmaco</label>
+                <input type="text" id="farmaco" name="farmaco" placeholder="ingrese farmaco">
+                <button type="submit" style="display: none;">registra farmaco</button>
+            </form>
+        </div>
+        <div class="form-wrapper">
+            <form method="post" onsubmit="validaCantidad(event)">
+                <label for="cantidad">Cantidad</label>
+                <input type="text" id="cantidad" name="cantidad" placeholder="ingrese cantidad">
+                <button type="submit" style="display: none;">registra cantidad</button>
+            </form>
+        </div>
+        <div class="form-wrapper">
+            <form method="post" onsubmit="agregarFarmaco(event)">
+                {% csrf_token %}
+                <label for="dosis">Dosis&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                <input type="text" id="dosis" name="dosis" placeholder="ingrese dosificación" >
+                <button type="submit" style="display: none;">registra producto-lote</button>
+            </form>
+        </div>
+    </div>
+
+    <label id="notas" name="notas" for="numero" style="color: #000000; background-color: #ffffff; font-weight:bold; font-style: italic; border-radius: 6px; padding:4px"></label>
+
+    <div id="popup" class="popup"></div>
+    
+    <table border="1">
+        <thead>
+            <tr>
+                <th class="estatus izquierda">Farmaco</th>
+                <th class="codsku izquierda">Cantidad</th>
+                <th class="dessku izquierda">Dosificación</th>
+                <th class="operacion izquierda">Oper</th>
+            </tr>
+        </thead>
+        <tbody id="lista_posologia">
+            {% for item in farmacos_registrados %}
+                <tr data-id="{{ producto.id }}">
+                    <td class="farmaco izquierda">{{ item.farmaco }}</td>
+                    <td class="cantidad izquierda">{{ item.cantidad }}</td>
+                    <td class="dosis izquierda">{{ item.dosis }}</td>
+                    <td class='operacion izquierda'>
+                        <a href="#"><i class="bi bi-trash" id="icons"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <form method="post" onsubmit="copiarDatos(event)"> 
+        {% csrf_token %} 
+        <button type="submit" name="finalizar">Aceptar y Guardar</button> 
+    </form>
+
+</body>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Actualizar almacén{% endblock %}
+{% block content %}
+{% include 'core/includes/sub_menu.html' with mensaje='medicoveterinario_update' %}
+<main role="main">
+  <div class="datatable-container style="font-size:80%;">
+    <div class="row mt-3 mb-5">
+      <div class="col-md-9 mx-auto">
+        <div>
+            <form action="" method="post">{% csrf_token %}
+                {{form.as_p}}
+                <div class="text-center">
+                    <input type="submit" class="btn btn-primary btn-block" value="Actualizar sociedad" />
+                </div>
+            </form>
+            {% if 'ok' in request.GET %}
+              <p style="color:green;">
+                Datos del medico veterinario editada correctamente
+                <a href="{% url 'medicoveterinario_list' %}"> Has clic aqui para regresar a la lista actualizada</a>
+              </p>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

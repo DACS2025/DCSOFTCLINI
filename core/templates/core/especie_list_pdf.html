@@ -1,0 +1,49 @@
+{% extends 'core/base_export_PDF.html' %}
+{% load static %}
+{% block headers %}
+<style>
+    .nombre {
+        width: 100%;  /* Ajusta el porcentaje según sea necesario */
+    }
+
+    @page {
+      size: 210mm 297mm;
+      margin: 20mm;
+      @top-center {
+        content: "LISTA DE ESPECIES REGISTRADAS";
+      }
+      @top-left {
+        content: "CliniVet-1.0";
+      }
+      @bottom-center {
+        content: "Pag " counter(page);
+      }
+    }
+
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+<div class="logo-container">
+  {% if ruta_logo_base64 %}
+    <img src="data:image/png;base64,{{ ruta_logo_base64 }}" alt="Logo" style="height: 50px;">
+  {% endif %}
+</div>
+<div class="datatable-container-pdf" style="font-size:70%;">
+  <table class="datatable">
+    <thead>
+      <tr>
+        <th class="categoria izquierda">Especies</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for especie in especies %}
+          <tr>
+              <td class="nombre izquierda">{{especie.nombre}}</td>
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}programar cita{% endblock %}
+{% block content %}
+{% include 'core/includes/sub_menu.html' with mensaje='programar_cita_nuevo_paciente' %}
+<main role="main">
+  <div class="datatable-container form-container style="font-size:75%;">
+    <div class="row mt-3 mb-5">
+      <div class="col-md-9 mx-auto">
+        <div>
+            <form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="errorlist">
+                                {% for error in field.errors %}
+                                    <p class="text-danger">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="text-center form-submit">
+                    <input type="submit" class="btn btn-primary btn-block" value="Programar cita para nuevo paciente" style="margin-top: 20px;"/>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

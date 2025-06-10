@@ -1,0 +1,65 @@
+{% extends 'core/base_export_PDF.html' %}
+{% load static %}
+{% block headers %}
+<style>
+    .nombre {
+        width: 34%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .colegiatura {
+        width: 8%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .direccion {
+        width: 30%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .email {
+        width: 22%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .telefono {
+        width: 6%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    @page {
+      size: 210mm 297mm;
+      margin: 20mm;
+      @top-center {
+        content: "STAFF DE MEDICOS VETERINARIOS";
+      }
+      @top-left {
+        content: "CliniVet-1.0";
+      }
+      @bottom-center {
+        content: "Pag " counter(page);
+      }
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="logo-container";">
+  {% if ruta_logo_base64 %}
+    <img src="data:image/png;base64,{{ ruta_logo_base64 }}" alt="Logo" style="height: 50px;">
+  {% endif %}
+</div>
+<div class="datatable-container-pdf" style="font-size:40%;">
+  <table class="datatable">
+    <thead>
+      <tr>
+        <th class="nombre izquierda">Nombres</th>
+        <th class="colegiatura izquierda">Colegiatura</i></th>
+        <th class="direccion izquierda">Dirección</th>
+        <th class="email izquierda">Email</th>
+        <th class="telefono izquierda">Teléfono</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in medicoveterinario %}
+          <tr>
+              <td class="nombre izquierda">{{item.nombres}}</td>
+              <td class="colegiatura izquierda">{{item.numero_colegiatura}}</td>
+              <td class="direccion izquierda">{{item.direccion}}</td>
+              <td class="email izquierda">{{item.email}}</td>
+              <td class="telefono izquierda">{{item.telefono}}</td>
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

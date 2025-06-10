@@ -1,0 +1,91 @@
+{% extends 'core/base_export_PDF.html' %}
+{% load static %}
+{% block headers %}
+<style>
+    .historia {
+        width: 5%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .paciente {
+        width: 14%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .fecha {
+        width: 6%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .peso {
+        width: 4%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .motivo {
+        width: 11%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .examen_fisico {
+        width: 11%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .diagnostico {
+        width: 12%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .tratamiento {
+        width: 11%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .notas_adicionales {
+        width: 11%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .medicoveterinario {
+        width: 10%;  /* Ajusta el porcentaje según sea necesario */
+    }
+
+    @page {
+      size: 297mm 210mm;
+      margin: 20mm;
+      @top-center {
+        content: "CONSULTAS MEDICAS POR PACIENTE";
+      }
+      @top-left {
+        content: "CliniVet-1.0";
+      }
+      @bottom-center {
+        content: "Pag " counter(page);
+      }
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="logo-container";">
+  {% if ruta_logo_base64 %}
+    <img src="data:image/png;base64,{{ ruta_logo_base64 }}" alt="Logo" style="height: 50px;">
+  {% endif %}
+</div>
+<div class="datatable-container-pdf-horizontal" style="font-size:45%;">
+  <table class="datatable">
+    <thead>
+      <tr>
+        <th class="historia izquierda">Nro Historia</th>
+        <th class="paciente izquierda">Paciente</th>
+        <th class="fecha izquierda">Fecha</th>
+        <th class="peso izquierda">Peso kg</th>
+        <th class="motivo izquierda">Motivo de la consulta</th>
+        <th class="examen_fisico izquierda">Examen físico</th>
+        <th class="diagnostico izquierda">Diagnóstico</th>
+        <th class="tratamiento izquierda">Tratamiento</th>
+        <th class="notas_adicionales izquierda">Notas adicionales</th>
+        <th class="medicoveterinario izquierda">Medico veterinario</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in consultasmedicas %}
+          <tr>
+              <td class="historia izquierda">{{item.paciente.historia.nro_hiscli}}</td>
+              <td class="paciente izquierda">{{item.paciente}}</td>
+              <td class="fecha izquierda">{{item.fecha|date:"Y-m-d"}}</td>
+              <td class="notas izquierda">{{item.peso}}</td>
+              <td class="concatenado izquierda">{{item.motivo}}</td>
+              <td class="concatenado izquierda">{{item.examen_fisico}}</td>
+              <td class="concatenado izquierda">{{item.diagnostico}}</td>
+              <td class="concatenado izquierda">{{item.tratamiento}}</td>
+              <td class="concatenado izquierda">{{item.notas_adicionales}}</td>
+              <td class="concatenado izquierda">{{item.medicoveterinario}}</td>
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

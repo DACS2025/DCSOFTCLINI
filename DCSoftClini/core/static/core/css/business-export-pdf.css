@@ -1,0 +1,342 @@
+bodyxx {
+  font-family: 'Lora';
+  background: linear-gradient(rgba(86, 124, 141, 0.625), rgba(86, 124, 141,0.625));
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Raleway';
+}
+
+p {
+  line-height: 1.75;
+}
+
+.text-faded {
+  color: #c8d9e6; /*rgba(214, 231, 182, 0.13);*/
+}
+
+/* .site-heading. Cada propiedad hace lo siguiente:
+
+margin-top: 5rem; – Establece un margen superior de 5 unidades de longitud relativas a la raíz del documento. Esto crea espacio por encima del elemento.
+
+margin-bottom: 5rem; – Establece un margen inferior de 5 unidades de longitud relativas a la raíz del documento. Esto crea espacio por debajo del elemento.
+
+text-transform: uppercase; – Convierte todo el texto dentro del elemento a mayúsculas.
+
+line-height: 1; – Establece la altura de la línea a 1, lo que significa que la altura de la línea es igual al tamaño de la fuente.
+
+font-family: 'Raleway'; – Especifica que la fuente del texto debe ser 'Raleway', siempre que esta fuente esté disponible o esté correctamente importada en tu proyecto. */
+
+.site-heading {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+  text-transform: uppercase;
+  line-height: 1;
+  font-family: 'Raleway';
+}
+
+/* display: block; – Cambia el comportamiento del elemento a un bloque, lo que significa que ocupa todo el ancho disponible y comienza en una nueva línea.
+
+font-size: 2rem; – Establece el tamaño de la fuente en 2 unidades de longitud relativas a la raíz del documento. En otras palabras, el tamaño de la fuente será 2 veces el tamaño de la fuente raíz.
+
+font-weight: 800; – Define el peso de la fuente como 800, lo que corresponde a una fuente muy negrita. */
+
+.site-heading .site-heading-upper {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.site-heading .site-heading-lower {
+  font-size: 5rem;
+  font-weight: 100;
+  line-height: 4rem;
+}
+
+.page-section {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+}
+
+.section-heading {
+  text-transform: uppercase;
+}
+
+.section-heading .section-heading-upper {
+  display: block;
+  font-size: 1rem;
+  font-weight: 800;
+  padding-bottom:.5rem;
+
+}
+
+.section-heading .section-heading-lower {
+  display: block;
+  font-size: 3rem;
+  font-weight: 100;
+}
+
+
+.section-heading .section-heading-under {
+  display: block;
+  font-size: 1rem;
+  text-transform: none;
+  font-weight: 300;
+  margin-top:.5rem;
+}
+
+.bg-faded {
+  background-color: rgba(114, 221, 32, 0.85);
+}
+
+.datatable-container {
+  border-radius: 0.5rem;
+  width: 100%;
+  height: 100%;  
+  padding: 10px;
+  border: 3px solid rgb(21, 77, 88);
+  box-sizing: border-box;
+  background-color:#ffffff8e;
+}
+
+.btn-xl {
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.intro {
+  position: relative;
+}
+
+.cta {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  background-color: rgba(199, 225, 169, 0.9);
+}
+
+.cta .cta-inner {
+  position: relative;
+  padding: 3rem;
+  margin: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+.cta .cta-inner:before {
+  border-radius: 0.5rem;
+  content: '';
+  position: absolute;
+  top: -0.5rem;
+  bottom: -0.5rem;
+  left: -0.5rem;
+  right: -0.5rem;
+  border: 0.25rem solid rgba(255, 255, 255, 0.85);
+}
+
+.cta .cta-innerv {
+  position: relative;
+  padding: 3rem;
+  margin: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+
+.list-hours {
+  font-size: 0.9rem;
+}
+
+.list-hours .list-hours-item {
+  border-bottom: 1px solid rgba(230, 167, 86, 0.5);
+  padding-bottom: .25rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.list-hours .list-hours-item.today {
+  font-weight: bold;
+  color: #e6a756;
+}
+
+.address strong {
+  font-size: 1.2rem;
+}
+
+.footer {
+  background-color: rgba(86, 124, 141,0.625);
+}
+
+.text-primary {
+  color: #2F4156 !important;
+}
+
+.bg-primary {
+  background-color: #2F4156 !important;
+}
+
+.btn {
+  box-shadow: 0px 3px 3px 0px rgba(33, 37, 41, 0.1)
+}
+
+.btn-primary {
+  background-color: #008BF5;
+  border-color: #008BF5;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  background-color: #177ac6;
+  border-color: #177ac6;
+}
+
+.font-weight-light {
+  font-weight: 100 !important;
+}
+
+.mbtm{
+  padding-top: 5rem;
+}
+
+.mbt{
+  padding-top: 2rem;
+}
+
+.mbt1{
+  padding-top: 1.25rem;
+}
+
+a.link{
+  color: #df902a;
+}
+
+a.link:hover{
+  text-decoration: none;
+  color: #e6a756 !important;
+}
+
+.section-content{
+  font-family: 'Lora' !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 28px !important;
+}
+
+ul.errorlist{
+  padding-top: .75rem;
+  font-style: italic;
+  color:red;
+}
+
+/* spacing */
+
+body {
+  background: none !important;/* Elimina cualquier fondo heredado */
+  box-shadow: none !important;/* Elimina cualquier sombra heredada */
+  background-attachment: scroll !important;/* Ajusta el fondo para que no se fije */
+  background-position: initial !important;/* Ajusta la posición del fondo */
+  background-size: auto !important;/* Ajusta el tamaño del fondo */
+  border: none !important;/*3px solid rgb(21, 77, 88);*/
+  box-sizing: none !important;
+}
+
+.datatable-container-pdf {
+  position: relative;
+  top: -12px;
+  border-radius: none !important;
+  width: 68%;
+  height: 100%;  
+  padding: 4px;
+  border: none !important;/*3px solid rgb(21, 77, 88);*/
+  box-sizing: none !important;
+  background-color:#ffffff8e;
+  font-family: 'Roboto', sans-serif;
+  z-index: 2;
+}
+
+.datatable-container-pdf-horizontal {
+  position: relative;
+  top: -12px;
+  border-radius: none !important;
+  width: 100%;
+  height: 100%;  
+  padding: 4px;
+  border: none !important;/*3px solid rgb(21, 77, 88);*/
+  box-sizing: none !important;
+  background-color:#ffffff8e;
+  font-family: 'Roboto', sans-serif;
+  z-index: 2;
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  border: 3px solid rgb(0, 85, 128);
+}
+
+th,
+td {
+  padding: 1px;
+}
+
+.header {
+  color: #ffffff;
+  position: relative;
+}
+
+thead tr {
+  color: #ffffff;
+}
+
+
+tbody tr:nth-child(odd) {
+  background-color: #f5efeb;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f5efebdd;
+}
+
+tbody tr {
+  height: 30px; /* Ajusta la altura según tus necesidades */
+}
+
+tbody tr td {
+  #icons{
+    font-size: 15px;
+    cursor: pointer;
+    margin-left: 5px;
+    color:darkcyan;
+  }
+}
+
+table {
+  background-color: #567C8D;
+}
+
+table tr:hover {
+  background-color: #b3e4f0;
+}
+
+.logo-container {
+  position: absolute;
+  top: -18mm;
+  left: 93.5%;
+  opacity: 1.0; /* Ajusta la transparencia, 0.0 es completamente transparente, 1.0 es opaco */
+  z-index: 1050; /* Asegúrate de que el logo esté en la parte superior */
+}
+
+.numerico_just_right {
+  text-align: right;
+}
+

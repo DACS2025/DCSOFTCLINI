@@ -1,0 +1,143 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Staff medicos{% endblock %}
+{% block headers %}
+{% endblock %}
+{% block content %}
+{% include 'core/includes/sub_menu.html' with mensaje='citasprogramadas_list' %}
+<style>
+    .fechacita {
+        width: 8%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .horacita {
+        width: 8%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .paciente {
+        width: 16%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .contacto {
+        width: 30%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .docid {
+        width: 8%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .telefono {
+        width: 8%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .notas {
+        width: 22%;  /* Ajusta el porcentaje según sea necesario */
+    }
+
+</style>
+
+<div class="datatable-container" style="font-size:85%;">
+  <table class="datatable">
+    <thead>
+      <tr>
+        <th class="fechacita izquierda">Fecha cita</th>
+        <th class="horacita izquierda">Hora cita</i></th>
+        <th class="paciente izquierda">Paciente</th>
+        <th class="contacto izquierda">Contacto</th>
+        <th class="docid izquierda">Docum ID</th>
+        <th class="telefono izquierda">Teléfono</th>
+        <th class="notas izquierda">Notas</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in page_obj %}
+          <tr>
+              <td class="fechacita izquierda">{{item.fecha_cita}}</td>
+              <td class="horacita izquierda">{{item.hora_cita}}</td>
+
+              {% if item.paciente %}
+                <td class="paciente izquierda">{{item.paciente.nombre}}</td>
+              {% else %}
+                <td class="paciente izquierda">Nuevo paciente</td>
+              {% endif %}
+
+              <td class="nombre izquierda">{{item.nombre_primario}} {{item.nombre_secundario}} {{item.apellido_primario}} {{item.apellido_secundario}}</td>
+
+              <td class="docid izquierda">{{item.tipodocid.desdocid}}-{{item.docum_identidad}}</td>
+
+              <td class="telefono izquierda">{{item.telef_movil}}</td>
+              <td class="notas izquierda">{{item.notas}}</td>
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% if is_paginated %}
+  <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+
+          <!-- Botón para ir a la primera página -->
+          <li class="page-item {% if page_obj.number == 1 %}disabled{% endif %}">
+              {% if page_obj.number != 1 %}
+                  <a class="page-link" href="?page=1" aria-label="Primera">
+                      <span aria-hidden="true">&laquo;&laquo;</span>
+                  </a>
+              {% else %}
+                  <span class="page-link" aria-label="Primera">&laquo;&laquo;</span>
+              {% endif %}
+          </li>
+
+          <!-- Botón para la página anterior -->
+          <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+              {% if page_obj.has_previous %}
+                  <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Anterior">
+                      <span aria-hidden="true">&laquo;</span>
+                  </a>
+              {% else %}
+                  <span class="page-link" aria-label="Anterior">&laquo;</span>
+              {% endif %}
+          </li>
+
+          <!-- Mostrar un rango dinámico de páginas -->
+          {% with page_obj.number|add:"-4" as start_page %}
+          {% with page_obj.number|add:"4" as end_page %}
+          {% for i in page_obj.paginator.page_range %}
+              {% if i >= start_page and i <= end_page %}
+                  <li class="page-item {% if page_obj.number == i %}active{% endif %}">
+                      <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                  </li>
+              {% endif %}
+          {% endfor %}
+          {% endwith %}
+          {% endwith %}
+
+          <!-- Botón para la página siguiente -->
+          <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+              {% if page_obj.has_next %}
+                  <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Siguiente">
+                      <span aria-hidden="true">&raquo;</span>
+                  </a>
+              {% else %}
+                  <span class="page-link" aria-label="Siguiente">&raquo;</span>
+              {% endif %}
+          </li>
+
+          <!-- Botón para ir a la última página -->
+          <li class="page-item {% if page_obj.number == paginator.num_pages %}disabled{% endif %}">
+              {% if page_obj.number != paginator.num_pages %}
+                  <a class="page-link" href="?page={{ paginator.num_pages }}" aria-label="Última">
+                      <span aria-hidden="true">&raquo;&raquo;</span>
+                  </a>
+              {% else %}
+                  <span class="page-link" aria-label="Última">&raquo;&raquo;</span>
+              {% endif %}
+          </li>
+
+          <!-- Campo para buscar por número de página -->
+          <li class="page-item">
+              <form method="GET" action="" class="d-flex align-items-center">
+                  <input type="number" name="page" id="pageInput" class="form-control"
+                        placeholder="Página" min="1" max="{{ paginator.num_pages }}"
+                        style="width: 100px; font-size: 0.870rem; height: 33px; text-align: center;">
+                  <button type="submit" class="btn btn-primary ms-2" style="font-size: 0.870rem;">Ir</button>
+              </form>
+          </li>
+
+      </ul>
+  </nav>
+  {% endif %}
+</div>
+{% endblock %}

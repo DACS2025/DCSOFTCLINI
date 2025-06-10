@@ -1,0 +1,94 @@
+{% extends 'core/base_export_PDF.html' %}
+{% load static %}
+{% block headers %}
+<style>
+    .paciente {
+        width: 14%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .historia {
+        width: 5%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .contacto {
+        width: 32%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .raza {
+        width: 10%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .sexo {
+        width: 4%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .nacimiento {
+        width: 15%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .color {
+        width: 15%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .peso {
+        width: 5%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    @page {
+      size: 297mm 210mm;
+      margin: 20mm;
+      @top-center {
+        content: "PACIENTES";
+      }
+      @top-left {
+        content: "CliniVet-1.0";
+      }
+      @bottom-center {
+        content: "Pag " counter(page);
+      }
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="logo-container";">
+  {% if ruta_logo_base64 %}
+    <img src="data:image/png;base64,{{ ruta_logo_base64 }}" alt="Logo" style="height: 50px;">
+  {% endif %}
+</div>
+<div class="datatable-container-pdf-horizontal" style="font-size:50%;">
+  <table class="datatable">
+    <thead>
+      <tr>
+        <th class='paciente izquierda'>Paciente</th>
+        <th class='historia izquierda'>Historia</th>
+        <th class='contacto izquierda'>Contacto</th>
+        <th class='raza izquierda'>Especie - Raza</th>
+        <th class='sexo izquierda'>Sexo</th>
+        <th class='nacimiento izquierda'>Nacimiento ( Edad actual )</th>
+        <th class='color izquierda'>Color</th>
+        <th class='peso numerico'>Peso Kg</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in pacientes %}
+          <tr>
+              <td class='paciente izquierda'>{{item.nombre}}</td>
+
+              {% if item.historia %}
+                <td class='historia izquierda'><a>{{item.historia.nro_hiscli}}</a></td>
+              {% else %}
+                <td class='historia izquierda'><a>Sin His</a></td>
+              {% endif %}
+              
+              <td class='contacto izquierda'>{{item.contactopaciente.nombres}} ({{item.contactopaciente.direccion}} - cel {{item.contactopaciente.telef_movil}} )</td>
+
+              <td class='raza izquierda'>{{item.raza.especie.nombre}} - {{item.raza.nombre}}</td>
+
+              {% if item.sexo == 'M' %}
+                <td class='sexo izquierda'>MACHO</td>
+              {% else %}
+                <td class='sexo izquierda'>HEMBRA</td>
+              {% endif %}
+
+              <td class='nacimiento izquierda'>{{item.nacimiento|date:"Y-m-d"}} ( {{item.calcular_edad_detallada}} )</td>
+
+              <td class='color izquierda'>{{item.color}}</td>
+              <td class='peso numerico'>{{item.peso}}</td>
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

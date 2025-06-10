@@ -1,0 +1,160 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Especies{% endblock %}
+{% block headers %}
+{% endblock %}
+{% block content %}
+{% include 'core/includes/sub_menu.html' with mensaje='consulta_medica_list' %}
+<style>
+    .historia {
+        width: 8%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .paciente {
+        width: 15%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .fecha {
+        width: 7%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .peso {
+        width: 5%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .motivo {
+        width: 10%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .examen_fisico {
+        width: 10%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .diagnostico {
+        width: 10%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .tratamiento {
+        width: 10%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .notas_adicionales {
+        width: 10%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .medicoveterinario {
+        width: 10%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .operaciones {
+        width: 4%;  /* Ajusta el porcentaje según sea necesario */
+    }
+</style>
+
+<div class="datatable-container" style="font-size:90%;">
+  <div class="header-tools">
+    <a href="{% url 'exportaPDF_consultamedica' %}"> Exporta a PDF  <i class="bi bi-printer" id="print"></i></a>
+  </div>
+  <table class="datatable">
+    <thead>
+      <tr>
+        <th class="historia izquierda">Nro Historia</th>
+        <th class="paciente izquierda">Paciente</th>
+        <th class="fecha izquierda">Fecha</th>
+        <th class="peso izquierda">Peso kg</th>
+        <th class="motivo izquierda">Motivo de la consulta</th>
+        <th class="examen_fisico izquierda">Examen físico</th>
+        <th class="diagnostico izquierda">Diagnóstico</th>
+        <th class="tratamiento izquierda">Tratamiento</th>
+        <th class="notas_adicionales izquierda">Notas adicionales</th>
+        <th class="medicoveterinario izquierda">Medico veterinario</th>
+        <th class="operaciones izquierda">Op</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in page_obj %}
+          <tr style="height: 25px;">
+              <td class="historia izquierda">{{item.paciente.historia.nro_hiscli}}</td>
+              <td class="paciente izquierda">{{item.paciente}}</td>
+              <td class="fecha izquierda">{{item.fecha|date:"Y-m-d"}}</td>
+              <td class="notas izquierda">{{item.peso}}</td>
+              <td class="concatenado izquierda">{{item.motivo}}</td>
+              <td class="concatenado izquierda">{{item.examen_fisico}}</td>
+              <td class="concatenado izquierda">{{item.diagnostico}}</td>
+              <td class="concatenado izquierda">{{item.tratamiento}}</td>
+              <td class="concatenado izquierda">{{item.notas_adicionales}}</td>
+              <td class="concatenado izquierda">{{item.medicoveterinario}}</td>
+
+              <td class="operaciones izquierda">
+                <a href="{% url 'consulta_medica_delete' item.id %}"><i class="bi bi-trash" id="icons"></i></a>
+              </td>
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% if is_paginated %}
+  <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+
+          <!-- Botón para ir a la primera página -->
+          <li class="page-item {% if page_obj.number == 1 %}disabled{% endif %}">
+              {% if page_obj.number != 1 %}
+                  <a class="page-link" href="?page=1" aria-label="Primera">
+                      <span aria-hidden="true">&laquo;&laquo;</span>
+                  </a>
+              {% else %}
+                  <span class="page-link" aria-label="Primera">&laquo;&laquo;</span>
+              {% endif %}
+          </li>
+
+          <!-- Botón para la página anterior -->
+          <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+              {% if page_obj.has_previous %}
+                  <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Anterior">
+                      <span aria-hidden="true">&laquo;</span>
+                  </a>
+              {% else %}
+                  <span class="page-link" aria-label="Anterior">&laquo;</span>
+              {% endif %}
+          </li>
+
+          <!-- Mostrar un rango dinámico de páginas -->
+          {% with page_obj.number|add:"-4" as start_page %}
+          {% with page_obj.number|add:"4" as end_page %}
+          {% for i in page_obj.paginator.page_range %}
+              {% if i >= start_page and i <= end_page %}
+                  <li class="page-item {% if page_obj.number == i %}active{% endif %}">
+                      <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                  </li>
+              {% endif %}
+          {% endfor %}
+          {% endwith %}
+          {% endwith %}
+
+          <!-- Botón para la página siguiente -->
+          <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+              {% if page_obj.has_next %}
+                  <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Siguiente">
+                      <span aria-hidden="true">&raquo;</span>
+                  </a>
+              {% else %}
+                  <span class="page-link" aria-label="Siguiente">&raquo;</span>
+              {% endif %}
+          </li>
+
+          <!-- Botón para ir a la última página -->
+          <li class="page-item {% if page_obj.number == paginator.num_pages %}disabled{% endif %}">
+              {% if page_obj.number != paginator.num_pages %}
+                  <a class="page-link" href="?page={{ paginator.num_pages }}" aria-label="Última">
+                      <span aria-hidden="true">&raquo;&raquo;</span>
+                  </a>
+              {% else %}
+                  <span class="page-link" aria-label="Última">&raquo;&raquo;</span>
+              {% endif %}
+          </li>
+
+          <!-- Campo para buscar por número de página -->
+          <li class="page-item">
+              <form method="GET" action="" class="d-flex align-items-center">
+                  <input type="number" name="page" id="pageInput" class="form-control"
+                        placeholder="Página" min="1" max="{{ paginator.num_pages }}"
+                        style="width: 100px; font-size: 0.870rem; height: 33px; text-align: center;">
+                  <button type="submit" class="btn btn-primary ms-2" style="font-size: 0.870rem;">Ir</button>
+              </form>
+          </li>
+
+      </ul>
+  </nav>
+  {% endif %}
+</div>
+{% endblock %}

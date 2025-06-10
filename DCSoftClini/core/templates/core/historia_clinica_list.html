@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Historia clinica{% endblock %}
+{% block headers %}
+{% endblock %}
+{% block content %}
+{% include 'core/includes/sub_menu.html' with mensaje='historias' %}
+<div class="datatable-container" style="font-size:90%;">
+  <div class="header-tools">
+    <input type="search" placeholder="Buscar">
+    <a>  <i class="bi bi-search" id="search"></i></a>
+    <a> Imprimir  <i class="bi bi-printer" id="print"></i></a>
+  </div>
+  <table class="datatable">
+    <thead>
+      <tr>
+        <th>Nro.Historia</th>
+        <th>Fecha</th>
+        <th>Paciente</th>
+        <th>Anamnesis</th>
+        <th>Antecedentes medicos</th>
+        <th>Vacunas aplicadas</th>
+        <th>Desparasitaciones</th>
+        <th>Medicamentos actuales</th>
+        <th>Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in historiaclinica %}
+          <tr>
+              <td>{{item.nro_hiscli}}</td>
+              <td>{{item.fecha_hora}}</td>
+              <td>{{item.paciente.nombre}}</td>
+              <td>{{item.anamnesis}}</td>
+              <td>{{item.antecedentes_medicos}}</td>
+              <td>{{item.vacunas_aplicadas}}</td>
+              <td>{{item.desparasitaciones}}</td>
+              <td>{{item.medicamentos_actuales}}</td>
+              <td>
+                <a><i class="bi bi-trash" id="icons"></i></a>
+              </td>
+
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

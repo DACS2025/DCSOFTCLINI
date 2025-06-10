@@ -1,0 +1,61 @@
+{% extends 'core/base_export_PDF.html' %}
+{% load static %}
+{% block headers %}
+<style>
+    .categoria {
+        width: 8%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .nombre {
+        width: 72%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .precio {
+        width: 10%;  /* Ajusta el porcentaje según sea necesario */
+    }
+    .moneda {
+        width: 10%;  /* Ajusta el porcentaje según sea necesario */
+    }
+
+    @page {
+      size: 210mm 297mm;
+      margin: 20mm;
+      @top-center {
+        content: "LISTA DE SERVICIOS";
+      }
+      @top-left {
+        content: "CliniVet-1.0";
+      }
+      @bottom-center {
+        content: "Pag " counter(page);
+      }
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="logo-container";">
+  {% if ruta_logo_base64 %}
+    <img src="data:image/png;base64,{{ ruta_logo_base64 }}" alt="Logo" style="height: 50px;">
+  {% endif %}
+</div>
+<div class="datatable-container-pdf" style="font-size:85%;">
+  <table class="datatable">
+    <thead>
+      <tr>
+        <th class="categoria izquierda">Categoria</th>
+        <th class="nombre izquierda">Nombre</th>
+        <th class="precio izquierda">Precio</th>
+        <th class="moneda izquierda">Moneda</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for servicio in tiposervicio %}
+          <tr>
+              <td class="categoria izquierda">{{servicio.destipo}}</td>
+              <td class="nombre izquierda">{{servicio.nombre}}</td>
+              <td class="precio izquierda">{{servicio.precio}}</td>
+              <td class="moneda izquierda">{{servicio.moneda}}</td>
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

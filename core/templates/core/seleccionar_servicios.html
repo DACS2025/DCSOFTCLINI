@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Nuevo contacto{% endblock %}
+{% block content %}
+{% include 'core/includes/sub_menu.html' with mensaje='servicios_add' %}
+<main role="main">
+  <div class="datatable-container form-container style="font-size:85%;">
+    <div class="row mt-3 mb-5">
+      <div class="col-md-9 mx-auto">
+        <div>
+            <form action="" method="post">{% csrf_token %}
+              <div>
+                <span>
+                  <p>Paciente: {{ paciente.nombre }}</p>
+                  <p>Contacto: {{ paciente.contactopaciente.nombres }}</p>
+                </span>
+              </div>
+
+              <div>
+                <label for="id_tipos_servicio">Marque los servicios a brindar:</label>
+                {% for checkbox in form.tipos_servicio %}
+                  <div class="form-check">
+                    {{ checkbox }}
+                    {{ checkbox.label_tag }}
+                  </div>
+                {% endfor %}
+              </div>
+              
+              <div class="form-group">
+                <label for="id_notas">Notas adicionales</label>
+                {{ form.notas }}
+              </div>
+              <div class="form-group">
+                <label for="id_fecha">Fecha</label>
+                {{ form.fecha }}
+              </div>
+              <div class="text-center form-submit">
+                  <input type="submit" class="btn btn-primary btn-block" value="Aceptar servicios" style="margin-top: 20px;"/>
+              </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
