@@ -11,8 +11,10 @@ django-ckeditor==6.7.2
 django-js-asset==3.1.2
 fonttools==4.57.0
 fpdf==1.7.2
+gunicorn==23.0.0
 isort==6.0.1
 mccabe==0.7.0
+packaging==25.0
 pdf2image==1.17.0
 pillow==11.2.0
 platformdirs==4.3.7
