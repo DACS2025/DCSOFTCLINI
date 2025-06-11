@@ -1,0 +1,760 @@
+body {
+  font-family: 'Lora';
+  background: linear-gradient(rgba(169, 182, 182, 0.625), rgba(169, 182, 182,0.625)), url("../img/fondo.png");
+  background-attachment: fixed;
+  background-position: center top;
+  background-size: cover;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Raleway';
+}
+
+p {
+  line-height: 1.75;
+}
+
+.text-faded {
+  color: #c8d9e6; /*rgba(214, 231, 182, 0.13);*/
+}
+
+.site-heading {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+  text-transform: uppercase;
+  line-height: 1;
+  font-family: 'Raleway';
+}
+
+.site-heading .site-heading-upper {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.site-heading .site-heading-lower {
+  font-size: 5rem;
+  font-weight: 100;
+  line-height: 4rem;
+}
+
+.page-section {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+}
+
+.section-heading {
+  text-transform: uppercase;
+}
+
+.section-heading .section-heading-upper {
+  display: block;
+  font-size: 1rem;
+  font-weight: 800;
+  padding-bottom:.5rem;
+
+}
+
+.section-heading .section-heading-lower {
+  display: block;
+  font-size: 3rem;
+  font-weight: 100;
+}
+
+
+.section-heading .section-heading-under {
+  display: block;
+  font-size: 1rem;
+  text-transform: none;
+  font-weight: 300;
+  margin-top:.5rem;
+}
+
+.bg-faded {
+  background-color: rgba(114, 221, 32, 0.85);
+}
+
+#mainNav {
+  /*background-color:  rgba(47, 65, 86, 0.578);*/
+  background-color: transparent; /* Asegúrate de que el fondo sea transparente */
+  box-shadow: none; /* Elimina cualquier sombra */
+  font-family: 'Raleway';
+}
+
+#mainNav .navbar-brand {
+  color:#c8d9e6; /* #567C8D;*/
+  z-index: 1000;
+
+}
+
+#mainNav .navbar-nav .nav-item .nav-link {
+  color: rgba(204, 223, 39, 0.853);
+  font-weight: 600;
+}
+
+#mainNav .navbar-nav .nav-item .nav-subitem .nav-sublink {
+  color: rgba(204, 223, 39, 0.853);
+  font-weight: 550;
+}
+
+#mainNav .navbar-nav .nav-item.active .nav-link {
+  color: #FFFFFF /* #C8D9E6; */
+}
+
+#mainNav .navbar-nav .nav-item.active .nav-subitem .nav-sublink {
+  color: #048b8e;
+}
+
+#mainNav .container {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente el contenido */
+  margin-top: 78px; /* Ajusta la cantidad de espacio superior según sea necesario */
+  z-index: 1;
+}
+
+.navbar {
+  z-index:1000;
+}
+
+.container-include {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  z-index: 1000;
+  position: relative;
+}
+
+.navbar-text {
+  padding-left: 0;
+  text-align: left;
+  flex-grow: 1;
+}
+
+.datatable-container {
+  position: relative;
+  top: -22px;
+  border-radius: 0.5rem;
+  width: 100%;
+  height: 100%;  
+  padding: 10px;
+  border: 3px solid rgb(21, 77, 88);
+  box-sizing: border-box;
+  background-color:#ffffff8e;
+  font-family: 'Roboto', sans-serif;
+  z-index: 2;
+}
+
+.align-left {
+  text-align: left;
+  float: left;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+@media (min-width: 980px) {
+  #mainNav .navbar-nav .nav-item .nav-link {
+    font-size: 0.9rem;
+  }
+  #mainNav .navbar-nav .nav-item .nav-link:hover {
+    color: rgba(255, 255, 255, 0.4); 
+  }
+  #mainNav .navbar-nav .nav-item.active .nav-link:hover {
+    color: #54a727;
+  }
+/*aplica a submenu*/
+  #mainNav .navbar-nav .nav-item .nav-subitem .nav-sublink {
+    font-size: 0.9rem;
+  }
+  #mainNav .navbar-nav .nav-item .nav-subitem .nav-sublink:hover {
+    color: rgba(255, 255, 255, 0.4); 
+  }
+  #mainNav .navbar-nav .nav-item.active .nav-subitem .nav-sublink:hover {
+    color: #54a727;
+  }
+
+}
+
+.btn-xl {
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.intro {
+  position: relative;
+}
+
+@media (min-width: 992px) {
+  .intro .intro-img {
+    width: 75%;
+    float: right;
+  }
+  .intro .intro-text {
+    left: 0;
+    width: 60%;
+    margin-top: 3rem;
+    position: absolute;
+  }
+  .intro .intro-text .intro-button {
+    width: 100%;
+    left: 0;
+    position: absolute;
+    bottom: -2rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .intro .intro-text {
+    width: 45%;
+  }
+}
+
+.cta {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  background-color: rgba(199, 225, 169, 0.9);
+}
+
+.cta .cta-inner {
+  position: relative;
+  padding: 3rem;
+  margin: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+.cta .cta-inner:before {
+  border-radius: 0.5rem;
+  content: '';
+  position: absolute;
+  top: -0.5rem;
+  bottom: -0.5rem;
+  left: -0.5rem;
+  right: -0.5rem;
+  border: 0.25rem solid rgba(255, 255, 255, 0.85);
+}
+
+.cta .cta-innerv {
+  position: relative;
+  padding: 3rem;
+  margin: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+@media (min-width: 992px) {
+  .about-heading .about-heading-img {
+    position: relative;
+    z-index: 0;
+  }
+  .about-heading .about-heading-content {
+    margin-top: -5rem;
+    position: relative;
+    z-index: 1;
+  }
+}
+
+@media (min-width: 992px) {
+  .product-item .product-item-title {
+    position: relative;
+    z-index: 1;
+    margin-bottom: -3rem;
+  }
+  .product-item .product-item-img {
+    position: relative;
+    z-index: 0;
+    max-width: 60vw;
+  }
+  .product-item .product-item-description {
+    position: relative;
+    z-index: 1;
+    margin-top: -3rem;
+    max-width: 50vw;
+  }
+}
+
+.list-hours {
+  font-size: 0.9rem;
+}
+
+.list-hours .list-hours-item {
+  border-bottom: 1px solid rgba(230, 167, 86, 0.5);
+  padding-bottom: .25rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.list-hours .list-hours-item.today {
+  font-weight: bold;
+  color: #e6a756;
+}
+
+@media (min-width: 992px) {
+  .list-hours {
+    width: 50%;
+    font-size: 1.1rem;
+  }
+}
+
+.address strong {
+  font-size: 1.2rem;
+}
+
+.footerx {
+  background-color: rgba(169, 182, 182,0.625);
+  position: absolute;
+  /*top: 80%;
+  left: 50.5%;
+  */
+  transform: translate(0%, 0%);
+  
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo negro translúcido */
+  color: white; /* Texto en color blanco */
+  text-align: center;
+  padding: 10px 0;
+  z-index: -1;
+}
+
+.text-primary {
+  color: #2F4156 !important;
+}
+
+.bg-primary {
+  background-color: #2F4156 !important;
+}
+
+.btn {
+  box-shadow: 0px 3px 3px 0px rgba(33, 37, 41, 0.1)
+}
+
+.btn-primary {
+  background-color: #008BF5;
+  border-color: #008BF5;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  background-color: #177ac6;
+  border-color: #177ac6;
+}
+
+.font-weight-light {
+  font-weight: 100 !important;
+}
+
+.mbtm{
+  padding-top: 5rem;
+}
+
+.mbt{
+  padding-top: 2rem;
+}
+
+.mbt1{
+  padding-top: 1.25rem;
+}
+
+a.link{
+  color: #df902a;
+}
+
+a.link:hover{
+  text-decoration: none;
+  color: #e6a756 !important;
+}
+
+.section-content{
+  font-family: 'Lora' !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 28px !important;
+}
+
+ul.errorlist{
+  padding-top: .75rem;
+  font-style: italic;
+  color:red;
+}
+
+/* spacing */
+
+table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  border: 3px solid rgb(0, 85, 128);
+}
+
+th,
+td {
+  padding: 1px;
+}
+
+.header {
+  color: #ffffff;
+  position: relative;
+}
+
+thead tr {
+  color: #ffffff;
+}
+
+
+tbody tr:nth-child(odd) {
+  background-color: #f5efeb;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f5efebdd;
+}
+
+tbody tr {
+  height: 50px; /* Ajusta la altura según tus necesidades */
+}
+
+tbody tr td {
+  #icons{
+    font-size: 15px;
+    cursor: pointer;
+    margin-left: 5px;
+    color:darkcyan;
+  }
+}
+
+table {
+  background-color: #567C8D;
+}
+
+table tr:hover {
+  background-color: #b3e4f0;
+}
+
+.numerico_just_right {
+  text-align: right;
+}
+
+.centrar {
+  text-align: center;
+}
+
+.izquierda {
+  text-align: left;
+  padding-left: 5px;
+}
+
+.numerico {
+  text-align: right;
+  padding-right: 5px;
+}
+
+.logo {
+  position: absolute;
+  top: 85%;
+  left: 50.5%;
+  transform: translate(-50%, -50%);
+  width: 250px; /* Ajusta el ancho según sea necesario */
+  height: auto; /* Mantén la relación de aspecto */
+  opacity: 0.4; /* Ajusta la transparencia, 0.0 es completamente transparente, 1.0 es opaco */
+}
+
+.logout {
+  position: absolute;
+  top: 2%;
+  left: 90.5%;
+  transform: translate(-22%, -50%);
+  width: 250px; /* Ajusta el ancho según sea necesario */
+  height: auto; /* Mantén la relación de aspecto */
+  opacity: 1.0; /* Ajusta la transparencia, 0.0 es completamente transparente, 1.0 es opaco */
+}
+
+.password_change {
+  position: absolute;
+  top: 4.5%;
+  left: 88.2%;
+  transform: translate(-17%, -50%);
+  width: 250px; /* Ajusta el ancho según sea necesario */
+  height: auto; /* Mantén la relación de aspecto */
+  opacity: 1.0; /* Ajusta la transparencia, 0.0 es completamente transparente, 1.0 es opaco */
+}
+
+.usuario_activo {
+  position: absolute;
+  top: 3.5%;
+  left: 71.5%;
+  transform: translate(-27%, -50%);
+  width: 250px; /* Ajusta el ancho según sea necesario */
+  height: auto; /* Mantén la relación de aspecto */
+  opacity: 1.0; /* Ajusta la transparencia, 0.0 es completamente transparente, 1.0 es opaco */
+  color:darkcyan;
+}
+
+.minimalista-titulo {
+  font-size: 1.8em; /* Tamaño del título */
+  font-weight: 500; /* Peso de la fuente más ligero para un estilo minimalista */
+  margin: 2px 0;
+  color: #438e50;
+}
+
+.avatar {
+  position: absolute;
+  top: 10px; /* Ajusta la posición superior */
+  left: 16px; /* Ajusta la posición izquierda */
+  transform: translate(-118%, -6%);
+  width: 150px; /* Ajusta el ancho según sea necesario */
+  height: auto; /* Mantén la relación de aspecto */
+  border: 2px solid #ccc; /* Añade un borde alrededor de la imagen */
+  border-radius: 8px; /* Añade bordes redondeados */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Añade una sombra */
+  opacity: 0.9; /* Ajusta la transparencia, 0.0 es completamente transparente, 1.0 es opaco */
+}
+
+.historia_left {
+  position: absolute;
+  top: 230px; /* Ajusta la posición superior */
+  left: 16px; /* Ajusta la posición izquierda */
+  padding: 4px;
+  transform: translate(-118%, -6%);
+  width: 150px; /* Ajusta el ancho según sea necesario */
+  height: auto; /* Mantén la relación de aspecto */
+  border: 2px solid #ccc; /* Añade un borde alrededor de la imagen */
+  border-radius: 8px; /* Añade bordes redondeados */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Añade una sombra */
+  opacity: 0.9; /* Ajusta la transparencia, 0.0 es completamente transparente, 1.0 es opaco */
+}
+
+.historia_right {
+  position: absolute;
+  top: 10px; /* Ajusta la posición superior */
+  left: 1308px; /* Ajusta la posición izquierda */
+  padding: 4px;
+  transform: translate(-100%, -6%);
+  width: 150px; /* Ajusta el ancho según sea necesario */
+  height: auto; /* Mantén la relación de aspecto */
+  border: 2px solid #ccc; /* Añade un borde alrededor de la imagen */
+  border-radius: 8px; /* Añade bordes redondeados */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Añade una sombra */
+  opacity: 0.9; /* Ajusta la transparencia, 0.0 es completamente transparente, 1.0 es opaco */
+}
+
+/* Opcional: Aplicar los otros colores de fondo en diferentes secciones */
+.bg-profundo {
+  background-color: rgb(169, 182, 182); /* El más profundo, con un tono más grisáceo y frío */
+}
+
+.bg-equilibrado {
+  background-color: rgb(183, 195, 193); /* Aún con profundidad, pero más equilibrado */
+}
+
+.bg-sutil {
+  background-color: rgb(187, 197, 193); /* Un poco más claro y sutil */
+}
+
+.bg-simil {
+  background-color: rgb(188, 198, 194); /* Muy similar al anterior, con una diferencia mínima */
+}
+
+.form-container {
+  font-size: 85%;
+  z-index: 2;
+  position: relative;
+}
+
+.form-container .form-group {
+  margin-bottom: 7.5px;
+  z-index: 3;
+  position: relative;
+}
+
+.form-container .form-group label {
+  display: flex;
+  margin-bottom: 1px;
+  font-weight: bold;
+  align-items: center;
+  position: relative;
+}
+
+.form-container .form-group input,
+.form-container .form-group textarea {
+  width: 100%;
+  padding: 2px 10px;
+  margin-top: 1px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  z-index: 3;
+  position: relative;
+}
+
+.form-container .form-submit {
+  margin-top: 1px;
+  z-index: 3;
+  position: relative;
+}
+
+.errorlist {
+  margin-top: 5px;
+}
+
+.errorlist .text-danger {
+  color: #a94442;
+}
+
+.modal {
+  z-index: 1050; /* Este es el valor predeterminado en Bootstrap */
+}
+
+.textarea-container {
+  /*white-space: pre-wrap; Mantiene los saltos de línea */
+  border: 1px solid #ced4da;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+  font-size: 16px;
+  line-height: 1.5;
+  z-index: 1050;
+}
+
+.modal-backdrop {
+  z-index: 0; /* Ajuste el z-index del backdrop */
+}
+.modal {
+  z-index: 1060; /* Ajuste el z-index del modal para que esté por encima del backdrop */
+}
+
+.modal-dialog {
+  max-width: 76%; /* Ajusta el ancho del modal a un 80% del contenedor padre */
+  margin-top: 80px; /* Baja el modal 10px más (la distancia predeterminada es 10px, sumando 10px más da un total de 20px) */
+}
+
+.textarea-container br {
+  line-height: 1; /* Ajusta la altura de la línea de los <br> para minimizar el espacio adicional */
+  margin: 0; /* Elimina cualquier margen adicional */
+  padding: 0; /* Elimina cualquier padding adicional */
+}
+
+.notificacion-cita {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10000;
+  margin-bottom: 10px;
+}
+
+/* Alerta emergente */
+.alerta-emergente {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  padding: 10px 15px;
+  border-radius: 5px;
+  z-index: 2000;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+}
+
+/* Opción minimizada */
+.opcion-minimizada {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.opcion-minimizada button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+}
+
+.opcion-minimizada button:hover {
+  background-color: #0056b3;
+}
+
+/* Lista de citas */
+.lista-citas {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 500px;
+  z-index: 1000;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.lista-citas .encabezado {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #0056b3;
+}
+
+.lista-citas .encabezado h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.lista-citas .encabezado button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#detalle-citas {
+  padding: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.lista-citas .cita {
+  display: block; /* Asegura que las filas sean bloques */
+  margin-bottom: 10px;
+  max-width: 100%; /* Evita truncamientos */
+  word-wrap: break-word; /* Permite romper palabras largas */
+}
+
+#detalle-citas .cita {
+  width: 100%;
+}
+
+.lista-citas .cita p {
+  margin: 5px 0;
+  white-space: normal; /* Asegura que el texto no se mantenga en una sola línea */
+  overflow: visible; /* Evita que el texto sea truncado */
+  text-overflow: clip; /* No aplica puntos suspensivos */
+}
