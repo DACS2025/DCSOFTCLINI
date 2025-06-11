@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-dn2gfpm#70z4gc8v+6tv66t1=4s_r%)*55m$&ynkrztsgw1as3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["clinivet.sistechdc.com"]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
